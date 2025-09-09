@@ -1,14 +1,106 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>Учёт уроков</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0ea5e9">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<header>
   <h1>Учёт уроков</h1>
-  <div id="app"></div>
-  <script src="app.js"></script>
+  <div class="actions">
+    <button id="installBtn" hidden>Установить офлайн</button>
+    <select id="tabSelect">
+      <option value="clients">Клиенты</option>
+      <option value="schedule">Календарь</option>
+      <option value="analytics">Аналитика</option>
+      <option value="settings">Настройки</option>
+    </select>
+  </div>
+</header>
+
+<main id="view"></main>
+
+<template id="clientsTpl">
+  <section class="stats">
+    <div><b>Мне должны:</b> <span id="owed"></span></div>
+    <div><b>Прогноз (месяц):</b> <span id="forecast"></span></div>
+  </section>
+  <section class="list-header">
+    <h2>Клиенты</h2>
+    <button id="addClientBtn">+ Клиент</button>
+  </section>
+  <ul id="clientsList" class="list"></ul>
+</template>
+
+<template id="clientDetailTpl">
+  <section class="backline"><button id="backBtn">← Назад</button><h2 id="clientName"></h2></section>
+  <div class="split">
+    <div>
+      <div><b>Долг клиента:</b> <span id="clientDebt"></span></div>
+      <div><b>Конверсия:</b> <span id="clientConv"></span></div>
+    </div>
+    <div class="rowgap">
+      <button id="addLessonBtn">+ Урок</button>
+      <button id="addPackBtn">Абонемент</button>
+    </div>
+  </div>
+  <h3>Не оплачено</h3>
+  <ul id="unpaidList" class="list"></ul>
+  <h3>Оплачено</h3>
+  <ul id="paidList" class="list"></ul>
+  <h3>Отменено</h3>
+  <ul id="canceledList" class="list"></ul>
+</template>
+
+<template id="scheduleTpl">
+  <section class="list-header"><h2>Календарь</h2></section>
+  <ul id="scheduleList" class="list"></ul>
+</template>
+
+<template id="lessonTpl">
+  <section class="backline"><button id="backBtn">← Назад</button><h2>Событие</h2></section>
+  <div class="card">
+    <div><b>Клиент:</b> <span id="lClient"></span></div>
+    <div><b>Стоимость:</b> <span id="lPrice"></span></div>
+    <div><b>Дата:</b> <span id="lDate"></span></div>
+    <div><b>Время:</b> <span id="lTime"></span></div>
+    <div><b>Длительность:</b> <span id="lDur"></span></div>
+    <div><b>Статус:</b> <span id="lStatus"></span></div>
+  </div>
+  <div class="rowgap">
+    <button id="markPaidBtn">Отметить оплаченным</button>
+    <button id="cancelBtn" class="danger">Отменить</button>
+    <button id="plus1hBtn">+1 час</button>
+    <button id="plus1dBtn">+1 день</button>
+  </div>
+</template>
+
+<template id="analyticsTpl">
+  <section class="list-header">
+    <h2>Аналитика</h2>
+    <select id="tagFilter"><option value="*">Все теги</option></select>
+  </section>
+  <div class="stats">
+    <div><b>Прогноз (месяц):</b> <span id="aForecast"></span></div>
+    <div><b>Конверсия общая:</b> <span id="aConv"></span></div>
+    <div><b>Остаток предоплат:</b> <span id="aRemain"></span></div>
+  </div>
+  <h3>По ученикам</h3>
+  <ul id="byClient" class="list"></ul>
+  <h3>Причины отмен (топ)</h3>
+  <ul id="reasons" class="list"></ul>
+</template>
+
+<template id="settingsTpl">
+  <h2>Настройки</h2>
+  <label>Символ валюты: <input id="currencyInput" value="₽" maxlength="3"></label>
+  <p class="muted">Данные хранятся локально в IndexedDB и не покидают устройство.</p>
+</template>
+
+<script src="app.js"></script>
 </body>
 </html>
